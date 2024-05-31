@@ -1,3 +1,5 @@
+//! Copyright (c) Microsoft Corporation. All rights reserved.
+//! Highly Confidential Material
 use anyhow::{bail, Context, Result};
 use clap::Parser;
 use flate2::read::GzDecoder;
