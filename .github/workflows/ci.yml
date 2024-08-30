@@ -1,0 +1,81 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/cbl-mariner/base/core:2.0
+    steps:
+      - name: Install dependencies
+        run: unset HOME; tdnf install -y build-essential git openssl-devel ca-certificates
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+      - name: Check format
+        run: cargo fmt -- --check
+      - name: Run cargo check
+        run: cargo check --locked
+      - name: Run cargo clippy
+        run: cargo clippy -- -D warnings
+
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/cbl-mariner/base/core:2.0
+      options: --privileged
+    steps:
+      - name: Install dependencies
+        run: unset HOME; tdnf install -y build-essential git openssl-devel ca-certificates tar helm
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+      - uses: oras-project/setup-oras@v1
+        with:
+          version: 1.2.0
+      - name: Run cargo test
+        run: cargo test
+
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/cbl-mariner/base/core:2.0
+    steps:
+      - name: Install dependencies
+        run: unset HOME; tdnf install -y build-essential git openssl-devel ca-certificates
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+      - name: Install cargo-generate-rpm
+        run: cargo install cargo-generate-rpm
+      - name: Build
+        run: cargo build --release
+      - name: Generate RPM package
+        run: cargo generate-rpm
+
+  release-dry-run:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/cbl-mariner/base/core:2.0
+    steps:
+      - name: Install dependencies
+        run: unset HOME; tdnf install -y build-essential git openssl-devel ca-certificates
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+      - uses: katyo/publish-crates@v2
+        with:
+          dry-run: true
+          ignore-unpublished-changes: true

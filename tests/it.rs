@@ -40,11 +40,13 @@ fn test_e2e() {
 
     let distribution_node = cncf_distribution::CncfDistribution.start().unwrap();
     let oci_ref = format!(
-        "localhost:{}/mychart:0.1.0",
+        "{}:{}/mychart:0.1.0",
+        distribution_node.get_host().unwrap(),
         distribution_node.get_host_port_ipv4(5000).unwrap(),
     );
     let status = Command::new("oras")
         .arg("copy")
+        .arg("--to-plain-http")
         .arg("--from-oci-layout")
         .arg("oci:0.1.0")
         .arg(&oci_ref)
@@ -54,7 +56,8 @@ fn test_e2e() {
     assert!(status.success());
 
     let helm_ref = format!(
-        "oci://localhost:{}/mychart",
+        "oci://{}:{}/mychart",
+        distribution_node.get_host().unwrap(),
         distribution_node.get_host_port_ipv4(5000).unwrap(),
     );
     // Check we can pull our helm chart
