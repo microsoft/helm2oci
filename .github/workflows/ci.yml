@@ -5,11 +5,7 @@ on: [push, pull_request]
 jobs:
   check:
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/cbl-mariner/base/core:2.0
     steps:
-      - name: Install dependencies
-        run: unset HOME; tdnf install -y build-essential git openssl-devel ca-certificates
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
         with:
@@ -24,12 +20,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/cbl-mariner/base/core:2.0
-      options: --privileged
     steps:
-      - name: Install dependencies
-        run: unset HOME; tdnf install -y build-essential git openssl-devel ca-certificates tar helm
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
         with:
@@ -44,11 +35,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/cbl-mariner/base/core:2.0
     steps:
-      - name: Install dependencies
-        run: unset HOME; tdnf install -y build-essential git openssl-devel ca-certificates
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
         with:
@@ -64,18 +51,12 @@ jobs:
 
   release-dry-run:
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/cbl-mariner/base/core:2.0
     steps:
-      - name: Install dependencies
-        run: unset HOME; tdnf install -y build-essential git openssl-devel ca-certificates
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
           toolchain: stable
           override: true
-      - uses: katyo/publish-crates@v2
-        with:
-          dry-run: true
-          ignore-unpublished-changes: true
+      - name: Publish dry-run
+        run: cargo publish --dry-run
