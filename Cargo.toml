@@ -1,0 +1,32 @@
+[package]
+name = "helm2oci"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+publish = true
+documentation = "https://github.com/microsoft/helm2oci/blob/main/README.md"
+homepage = "https://github.com/microsoft/helm2oci"
+repository = "https://github.com/microsoft/helm2oci"
+description = "A tool to convert Helm charts tarfiles into OCI layout"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.75"
+argh = "0.1.12"
+flate2 = { version = "1.0.24", features = ["zlib"], default-features = false }
+ocidir = "0.2.1"
+serde_json = "1.0.105"
+serde_yml = "0.0.12"
+tar = "0.4.38"
+
+[dev-dependencies]
+test-temp-dir = "0.2.2"
+testcontainers = { version = "0.21.1", features = ["blocking"] }
+testcontainers-modules = { version = "0.9.0", features = ["cncf_distribution"] }
+
+[package.metadata.generate-rpm]
+assets = [
+    { source = "target/release/helm2oci", dest = "/usr/bin/helm2oci", mode = "0755" },
+    { source = "LICENSE", dest = "/usr/share/doc/helm2oci/LICENSE", doc = true, mode = "0644" },
+]
