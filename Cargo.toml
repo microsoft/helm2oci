@@ -22,7 +22,7 @@ tar = "0.4.38"
 
 [dev-dependencies]
 test-temp-dir = "0.2.2"
-testcontainers = { version = "0.21.1", features = ["blocking"] }
+testcontainers = { version = "0.23.1", features = ["blocking"] }
 testcontainers-modules = { version = "0.9.0", features = ["cncf_distribution"] }
 
 [package.metadata.generate-rpm]
