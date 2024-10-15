@@ -1,5 +1,5 @@
-//! Copyright (c) Microsoft Corporation. All rights reserved.
-//! Highly Confidential Material
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 use anyhow::{anyhow, Context, Result};
 use argh::FromArgs;
 use flate2::read::GzDecoder;
