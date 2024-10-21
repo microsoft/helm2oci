@@ -16,7 +16,7 @@ anyhow = "1.0.75"
 argh = "0.1.12"
 flate2 = { version = "1.0.24", features = ["zlib"], default-features = false }
 ocidir = "0.2.1"
-serde_json = "1.0.105"
+serde_json = "1.0.132"
 serde_yml = "0.0.12"
 tar = "0.4.38"
 
