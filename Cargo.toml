@@ -12,7 +12,7 @@ description = "A tool to convert Helm charts tarfiles into OCI layout"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-anyhow = "1.0.75"
+anyhow = "1.0.94"
 argh = "0.1.12"
 flate2 = { version = "1.0.35", features = ["zlib"], default-features = false }
 ocidir = "0.2.1"
