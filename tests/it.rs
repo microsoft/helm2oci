@@ -38,7 +38,9 @@ fn test_e2e() {
         .unwrap();
     assert!(status.success());
 
-    let distribution_node = cncf_distribution::CncfDistribution.start().unwrap();
+    let distribution_node = cncf_distribution::CncfDistribution::default()
+        .start()
+        .unwrap();
     let oci_ref = format!(
         "{}:{}/mychart:0.1.0",
         distribution_node.get_host().unwrap(),
